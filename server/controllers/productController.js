@@ -33,17 +33,23 @@ exports.getProducts = async (req, res) => {
     }
 };
 
-// Get a single product by ID
+// Replace the old getProductById function in server/controllers/productController.js
+
 exports.getProductById = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ message: 'Product not found' });
+        // --- THIS IS THE CHANGE ---
+        // .populate() will find the seller by their ID and attach their username.
+        const product = await Product.findById(req.params.id).populate('seller', 'username');
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
         res.json(product);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error("Get Product By ID Error:", err.message);
+        res.status(500).json({ error: "Server error while fetching product." });
     }
 };
-
 // Replace the old updateProduct function in server/controllers/productController.js
 
 exports.updateProduct = async (req, res) => {
