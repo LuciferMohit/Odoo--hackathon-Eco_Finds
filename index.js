@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors"); // <-- 1. IMPORT THE CORS PACKAGE
 const connectDB = require("./db");
 const productRoutes = require("./server/routes/productRoutes");
 const authRoutes = require("./server/routes/authRoutes");
@@ -7,6 +8,7 @@ const authMiddleware = require("./server/middleware/authMiddleware");
 const app = express();
 
 // Middleware
+app.use(cors()); // <-- 2. USE THE CORS MIDDLEWARE (place it before your routes)
 app.use(express.json());
 
 // Secret route (protected)
